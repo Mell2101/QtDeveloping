@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/new/prefix1">
-        <file>TaskFile.txt</file>
-    </qresource>
-    <qresource prefix="/imeg">
-        <file>buttomblue.png</file>
-        <file>buttonred.png</file>
-    </qresource>
-</RCC>
