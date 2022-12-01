@@ -1,82 +1,142 @@
-import QtQuick 2.15
-import TaskManeger 1.0
-import QtQuick.Layouts 1.15
+import QtQuick 2.0
 import QtQuick.Controls 2.15
+//import QtQuick.Window 2.15
+import QtQuick.Layouts
+import TaskManeger 1.0
 
-
-Window {
-    width: 900
-    height: 540
+Window{
+    id:_win
     visible: true
-    title: qsTr("Hello World")
+    width: 640
+    height: 480
+    title: "Hello world"
 
-    TaskManeger{
-        id: _taskmaneger
+    color: "steelblue"
+
+    TaskManager{
+        id: _tm
     }
 
     GridLayout{
+        rows: 10
+        columns: 10
 
-        TextField{
+            TextField{
+                id: _txtTask
+                Layout.row:0
+                Layout.column: 0
 
-            id: _txtTask
-            text: "Enter your task!"
-            selectionColor: "blue"
+                placeholderText: "Enter your task"
 
+                background: Rectangle {
+                         implicitWidth: 200
+                         implicitHeight: 25
 
-        }
+                         radius: 5
 
-        TextEdit{
+                     }
 
-            readOnly: true
-            text: ", complete up to: "
-
-        }
-
-        SpinBox{
-            value: 0
-            id: _txtDateDay
-
-
-
-        }
-
-        SpinBox{
-            value: 0
-            id: _txtDateMonth
-        }
-
-        SpinBox{
-            value: 0
-            id: _txtDateYear
-        }
-
-
-
-        TextEdit{
-
-            readOnly: true
-            text: ". Current progress:"
-
-        }
-
-        TextField{
-            id: _txtProg
-            text: "Enter your progress"
-
-        }
-
-        Button{
-
-
-            onClicked: {
-                _taskmaneger.setTask(_txtTask)
-                _taskmaneger.setTime(_txtDateDay, _txtDateMonth, _txtDateYear)
-                _taskmaneger.setProgress(_txtProg)
-                _taskmaneger.creatTask()
             }
-        }
 
-    }
+            TextField{
+                id:_txtDay
+                Layout.row:0
+                Layout.column: 1
+
+                placeholderText: "day"
+
+                background: Rectangle {
+                         implicitWidth: 40
+                         implicitHeight: 25
+
+                         radius: 5
+
+                     }
+
+            }
+
+            TextField{
+                id:_txtMoth
+                Layout.row:0
+                Layout.column: 2
+
+                placeholderText: "Month"
+
+                background: Rectangle {
+                         implicitWidth: 50
+                         implicitHeight: 25
+
+                         radius: 5
+
+                     }
+
+            }
+
+            TextField{
+                id:_txtYear
+                Layout.row:0
+                Layout.column: 3
+
+                placeholderText: "Year"
+
+                background: Rectangle {
+                         implicitWidth: 40
+                         implicitHeight: 25
+
+                         radius: 5
+
+                     }
+
+            }
+
+
+            Rectangle{
+
+                color: _win.color
+                Layout.row: 0
+                Layout.column:6
+
+                height: 25
+                width: 80
+
+                SaveButton{
+
+                    anchors.fill: parent
+                    text: "Add Task"
+                    onClicked: {
+                        _tm.setTask(_txtTask.text)
+                        _tm.setDate(_txtDay.text, _txtMoth.text, _txtYear.text)
+                        _tm.creatTask();
+
+                    }
+
+                }
+            }
+
+            Rectangle{
+
+                color: _win.color
+                Layout.row: 0
+                Layout.column:7
+
+                height: 25
+                width: 80
+
+                SaveButton{
+
+                    anchors.fill: parent
+                    text: "Save All"
+                    onClicked: {
+
+                        _tm.saveAll();
+                    }
+
+                }
+            }
+
+
+
+        }
 
 
 }

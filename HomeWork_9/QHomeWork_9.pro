@@ -1,14 +1,15 @@
 QT += quick
-QT += widgets
+CONFIG += c++17
+
 
 SOURCES += \
         main.cpp \
-        taskmaneger.cpp
+        taskmanager.cpp
 
 resources.files = main.qml 
 resources.prefix = /$${TARGET}
 RESOURCES += resources \
-    TaskFile.qrc
+    Task.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -22,6 +23,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    taskmaneger.h
-
-DISTFILES +=
+    taskmanager.h
