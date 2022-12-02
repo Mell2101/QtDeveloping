@@ -1,5 +1,5 @@
 #include "taskmanager.h"
-
+#include <QDebug>
 TaskManager::TaskManager(QObject *parent)
     : QObject{parent}
 {
@@ -7,6 +7,15 @@ TaskManager::TaskManager(QObject *parent)
     _date->currentDate();
 
     _task = " Enter a new task";
+    _path = "./Tasks.txt";
+
+    file = new QFile(_path, this);
+    if(!file->open(QIODevice::ReadWrite )) return;
+
+    QByteArray by = file->readAll();
+    _writeTask.append(by);
+
+
 
 
 }
@@ -22,46 +31,48 @@ void TaskManager::setTask(QString task)
     _task = task;
 }
 
-void TaskManager::setTreeTask(QString &taskTree, int i)
+void TaskManager::setTreeTask(QString taskTree)
 {
-    _treeTask[i] = taskTree;
+    _treeTask.append(taskTree);
 }
 
 void TaskManager::creatTask()
 {
-    _writeTask.append(_task + " " + _date->toString("dd, MM, yy") + "/n");
-
+    _writeTask.append(_task + " " + _date->toString("dd, MM, yy") + "\n");
+    _treeTask.clear();
 }
 
 void TaskManager::creatTaskTree()
 {
+    //if(_treeTask.isEmpty()) return;
+
     for(int i = 0; i < _treeTask.size(); ++i)
     {
-        _writeTask[i+1] = _treeTask[i] + "/n";
+        _writeTask.append( _treeTask[i] + "\n" );
     }
 }
 
 void TaskManager::saveAll()
 {
-    file = new QFile(_path, this);
 
-    if(file->open(QIODevice::WriteOnly )) {
 
-        if(_writeTask.isEmpty()) return;
+    if(_writeTask.isEmpty()) return;
 
-        QByteArray ba = _writeTask[0].toUtf8();
+    for(int i = 0; i < _writeTask.size(); ++i)
+    {
+
+        QByteArray ba = _writeTask[i].toUtf8();
         file->write(ba);
 
     }
-/*
-    QDataStream stream(file);
-    auto by = _writeTask[0].toUtf8();
-    int len = by.length();
-    stream.writeRawData((char*)&len, sizeof len);
-    stream.writeRawData(by.data(), len);
+    _writeTask.clear();
 
-    stream.writeRawData((char*)&len, sizeof len);
-    stream.writeRawData(by.data(), len);
-*/
+
+}
+
+QString TaskManager::progress()
+{
+    _progress = _writeTask.size() /10;
+    return QString::number(_progress) + "%";
 }
 

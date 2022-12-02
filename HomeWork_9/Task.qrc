@@ -8,7 +8,4 @@
         <file>BlueButton.png</file>
         <file>GreenButton.png</file>
     </qresource>
-    <qresource prefix="/new/Task">
-        <file>Tasks.txt</file>
-    </qresource>
 </RCC>

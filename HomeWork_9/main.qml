@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.15
-//import QtQuick.Window 2.15
-import QtQuick.Layouts
+import QtQuick.Window 2.15
+import QtQuick.Layouts 1.15
 import TaskManeger 1.0
 
 Window{
@@ -89,6 +89,9 @@ Window{
 
             }
 
+            Text {
+                text: qsTr(_tm.progress())
+            }
 
             Rectangle{
 
@@ -97,21 +100,20 @@ Window{
                 Layout.column:6
 
                 height: 25
-                width: 80
+                width: 50
 
                 SaveButton{
 
                     anchors.fill: parent
-                    text: "Add Task"
+                    text: "+"
                     onClicked: {
-                        _tm.setTask(_txtTask.text)
-                        _tm.setDate(_txtDay.text, _txtMoth.text, _txtYear.text)
-                        _tm.creatTask();
+                        _tm.setTreeTask(_txtTask.text)
 
                     }
 
                 }
             }
+
 
             Rectangle{
 
@@ -125,9 +127,33 @@ Window{
                 SaveButton{
 
                     anchors.fill: parent
+                    text: "Add Task"
+                    onClicked: {
+                        _tm.setTask(_txtTask.text)
+                        _tm.setDate(_txtDay.text, _txtMoth.text, _txtYear.text)
+                        _tm.creatTaskTree();
+                        _tm.creatTask();
+
+
+                    }
+
+                }
+            }
+
+            Rectangle{
+
+                color: _win.color
+                Layout.row: 0
+                Layout.column:8
+
+                height: 25
+                width: 80
+
+                SaveButton{
+
+                    anchors.fill: parent
                     text: "Save All"
                     onClicked: {
-
                         _tm.saveAll();
                     }
 

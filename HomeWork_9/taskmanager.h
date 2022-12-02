@@ -14,12 +14,13 @@ public:
 
     Q_INVOKABLE void setDate(QString day, QString month, QString year);
     Q_INVOKABLE void setTask(QString task);
-    Q_INVOKABLE void setTreeTask(QString& taskTree, int i);
+    Q_INVOKABLE void setTreeTask(QString taskTree);
 
 
     Q_INVOKABLE void creatTask();
     Q_INVOKABLE void creatTaskTree();
     Q_INVOKABLE void saveAll();
+    Q_INVOKABLE QString progress();
 
 signals:
 
@@ -31,7 +32,7 @@ private:
     int _progress;
     QFile *file;
 
-    QString _path = ":/new/Task/Tasks.txt";
+    QString _path;
 
 
 };
