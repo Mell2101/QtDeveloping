@@ -3,7 +3,6 @@
     <qresource prefix="/">
         <file>SaveButton.qml</file>
         <file>main.qml</file>
-        <file>ShowTasks.qml</file>
     </qresource>
     <qresource prefix="/new/button">
         <file>BlueButton.png</file>

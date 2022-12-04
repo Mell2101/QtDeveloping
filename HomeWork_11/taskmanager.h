@@ -8,7 +8,7 @@
 #include <QSqlQuery>
 #include <QSqlTableModel>
 #include <QQmlContext>
-#include <QQmlEngine>
+#include <QTableView>
 
 
 class TaskManager : public QObject
@@ -20,7 +20,6 @@ public:
 
     Q_INVOKABLE void setDate(QString day, QString month, QString year);
     Q_INVOKABLE void setTask(QString task);
-    Q_INVOKABLE void setTreeTask(QString taskTree);
     Q_INVOKABLE void setProgress(QString prog);
 
 
@@ -29,17 +28,15 @@ public:
 
     Q_INVOKABLE bool insertRecord();
 
-    Q_INVOKABLE QSqlTableModel* getModel();
-
+    Q_INVOKABLE bool createConnection();
+    Q_INVOKABLE bool creatTable();
+    Q_INVOKABLE void showTasks();
 
 
 
 signals:
 
 private:
-
-    QStringList _writeTask;
-    QStringList _treeTask;
 
     int _progress;
     int _numberOfTasks;
@@ -53,14 +50,7 @@ private:
 
     QSqlDatabase _db;
 
-
-
-
-
-    Q_INVOKABLE bool createConnection();
-    Q_INVOKABLE bool creatTable();
-
-
+    QTableView* _table;
     QSqlTableModel* _model;
 
 

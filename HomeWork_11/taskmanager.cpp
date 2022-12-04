@@ -1,12 +1,14 @@
 #include "taskmanager.h"
 #include <QDebug>
+#include <QSqlError>
+#include <QApplication>
 
 TaskManager::TaskManager(QObject *parent)
     : QObject{parent}
 {
 
     _date = new QDate;
-    _path = "tasktable.db";
+    _path = "TaskTable.db";
 
 
     file = new QFile(_path, this);
@@ -14,17 +16,20 @@ TaskManager::TaskManager(QObject *parent)
 
     if(!createConnection()) return;
 
-
-    if(!file->exists()) {
-
+    if(!file->exists()){
         if(!creatTable()) return;
     }
 
+    _table = new QTableView;
+
 
     _model = new QSqlTableModel(this);
-    _model->setTable("tasktable");
+    _model->setTable("TaskTable");
     _model->select();
 
+    _table->setModel(_model);
+
+    _numberOfTasks = _model->rowCount();
 
 }
 
@@ -50,10 +55,7 @@ void TaskManager::setTask(QString task)
     _task = task;
 }
 
-void TaskManager::setTreeTask(QString taskTree)
-{
-    _treeTask.append(taskTree);
-}
+
 
 QString TaskManager::getStatus()
 {
@@ -65,16 +67,10 @@ QString TaskManager::getNumberOfTasks()
     return QString::number(_numberOfTasks);
 }
 
-QSqlTableModel* TaskManager::getModel()
-{
-    return _model;
-}
-
-
 bool TaskManager::createConnection()
 {
     _db = QSqlDatabase::addDatabase("QSQLITE");
-    _db.setDatabaseName("tasktable.db");
+    _db.setDatabaseName("TaskTable.db");
     if(!_db.open()){
         qDebug() << " 0";
         return false;
@@ -87,40 +83,57 @@ bool TaskManager::creatTable()
 {
     QSqlQuery query;
 
-    QString s = "CREATE TABLE tasktable ("
-            "id INTEGER PRIMARY NOT KEY,"
-            "task VARCHAR(12),"
-            "date VARCHAR(15),"
-            "progress VARCHAR(5);";
+    QString s = "CREATE TABLE TaskTable ("
+                "id INTEGER PRIMARY KEY NOT NULL,"
+                "task VARCHAR(100),"
+                "date VARCHAR(20),"
+                "progress VARCHAR(20)"
+                ");";
+
+
+
 
     if(!query.exec(s)){
-        qDebug() << " 0";
+        qDebug() << query.lastError().text() << "0";
         return false;
 
     }
+    qDebug() << query.lastError().text() << "0";
     return true;
 
+}
+
+void TaskManager::showTasks()
+{
+    _table->show();
 }
 
 bool TaskManager::insertRecord()
 {
 
+    if(_date->isNull() || _path.isEmpty())
+    {
+        qDebug() << "0";
+        return false;
+    };
+
     QSqlQuery query;
-    QString s = "INSERT INTO tasktable (task, date, progress)"
-                "VALUES('%1', '%2', '%3');";
+    QString s = "INSERT INTO TaskTable (task, date, progress)"
+                "VALUES('%1', '%2', '%3')";
 
     QString q = s.arg(_task).arg(_date->toString("dd, MM, yy")).arg(QString::number(_progress));
 
+
     if(!query.exec(q))
     {
-        qDebug() << "0";
+        qDebug() << query.lastError().text()  << "0";
         return false;
     }
 
     return true;
 }
 
-void TaskManager::setProgress(QString prog)
+void TaskManager::setProgress(QString prog  = "0")
 {
     _progress = prog.toDouble();
 

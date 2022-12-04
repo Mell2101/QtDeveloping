@@ -13,12 +13,10 @@ Window{
 
     color: "steelblue"
 
+
+
     TaskManager{
         id: _tm
-    }
-
-    ShowTasks{
-        id:_winTask
     }
 
     GridLayout{
@@ -116,28 +114,6 @@ Window{
                 Layout.column:5
 
                 height: 25
-                width: 50
-
-                SaveButton{
-
-                    anchors.fill: parent
-                    text: "+"
-                    onClicked: {
-                        _tm.setTreeTask(_txtTask.text)
-
-                    }
-
-                }
-            }
-
-
-            Rectangle{
-
-                color: _win.color
-                Layout.row: 0
-                Layout.column:6
-
-                height: 25
                 width: 80
 
                 SaveButton{
@@ -146,14 +122,10 @@ Window{
                     text: "Add Task"
                     onClicked: {
                         _txtStatus.text = _tm.getStatus();
-
                         _tm.setTask(_txtTask.text)
                         _tm.setProgress(_txtProgress.text)
                         _tm.setDate(_txtDay.text, _txtMoth.text, _txtYear.text)
-                        /*
-                        _tm.creatTaskTree();
-                        _tm.creatTask();
-                        */
+
                         _tm.insertRecord();
 
 
@@ -162,27 +134,7 @@ Window{
 
                 }
             }
-/*
-            Rectangle{
 
-                color: _win.color
-                Layout.row: 0
-                Layout.column:7
-
-                height: 25
-                width: 80
-
-                SaveButton{
-
-                    anchors.fill: parent
-                    text: "Save All"
-                    onClicked: {
-                        _tm.saveAll();
-                    }
-
-                }
-            }
-*/
             TextField{
                 id:_txtStatus
                 Layout.row:1
@@ -216,7 +168,8 @@ Window{
                     anchors.fill: parent
                     text: "Show Tasks"
                     onClicked: {
-                        _winTask.visible = true;
+
+                        _tm.showTasks();
 
                     }
 
